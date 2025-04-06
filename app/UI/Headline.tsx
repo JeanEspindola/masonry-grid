@@ -3,6 +3,6 @@ export type HeadlineProps = {
 }
 export function Headline({ text }: HeadlineProps) {
 	return (
-		<h1 className="text-[4vw]">{text}</h1>
+		<h1 className="text-[clamp(1em,3vw,3em)] max-h-[132px]">{text}</h1>
 	)
 }

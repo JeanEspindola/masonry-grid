@@ -7,7 +7,7 @@ export type ImageProps = {
 export function Image({ src, alt, color, className}: ImageProps) {
 	return (
 		<img
-			src={src}
+			srcSet={src}
 			alt={alt || ''}
 			style={{ backgroundColor: color }}
 			loading="lazy"
