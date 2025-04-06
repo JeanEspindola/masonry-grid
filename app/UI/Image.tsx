@@ -4,7 +4,7 @@ export type ImageProps = {
 	color: string | null
 	className?: string
 }
-export function Image({ src, alt, color, className}: ImageProps) {
+export function Image({ src, alt, color, className }: ImageProps) {
 	return (
 		<img
 			srcSet={src}

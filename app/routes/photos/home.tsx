@@ -1,8 +1,8 @@
 import type { Route } from './+types/home'
 import { getPhotos } from '~/modules/photos.server'
 import type { Photo } from 'pexels'
-import { Image } from '~/UI/Image'
 import { PageHeader } from '~/UI/PageHeader'
+import { PhotoGridItem } from '~/UI/PhotoGridItem'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -19,22 +19,25 @@ export async function loader({}: Route.LoaderArgs) {
 
 export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   const photos = loaderData.photos as Photo[]
+  console.log(photos)
   const page = loaderData.page as number
 
+  const heightStyle = 'max-h-[calc(100svh_-_108px)] sm:max-h-[calc(100svh_-_116px)] md:max-h-[calc(100svh_-_140px)] lg:max-h-[calc(100svh_-_164px)] xl:max-h-[calc(100svh_-_180px)]'
+
   return (
-    <main className="flex items-center justify-center p-4">
-      <div className="flex-1 flex flex-col items-center gap-4">
+    <main className="flex items-center justify-center p-4 w-full">
+      <div className="flex flex-col items-center gap-4 w-full">
         <PageHeader title="Masonry Grid - Content Platform" navButton={{ label: '← Home', path: '/' }} />
-        <div className="columns-2xs w-full gap-2">
-          {photos.map(item => {
-            const { id, alt, avg_color, src: { original} } = item
-            return (
-              <div className="relative group flex items-center justify-center">
-                <Image color={avg_color} className="hover:cursor-pointer hover:opacity-40 mb-2" src={original} key={id} alt={alt} />
-                <span className="absolute text-xl font-bold invisible pointer-events-none group-hover:visible">Open</span>
-              </div>
-            )
-          })}
+        <div className={`flex flex-col overflow-y-auto w-full -mt-10 ${heightStyle}`}>
+          <div className={`columns-2xs w-full gap-2 h-full`}>
+            {photos.map(item => {
+              const { id, alt, avg_color, src: { original, medium} } = item
+
+              return (
+               <PhotoGridItem alt={alt} imageSrc={medium} backgroundColor={avg_color} photoId={id} key={id} />
+              )
+            })}
+          </div>
         </div>
       </div>
     </main>

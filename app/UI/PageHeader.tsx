@@ -13,7 +13,7 @@ export type PageHeaderProps = {
 export function PageHeader({ title, navButton: { path, label }}: PageHeaderProps) {
 	const heightStyle = 'h-[100px] sm:h-[110px] md:h-[132px] lg:h-[156px] xl:h-[172px]'
 	return (
-		<header className={`flex flex-col items-center justify-center gap-2 w-full ${heightStyle}`}>
+		<header className={`flex flex-col items-center gap-2 w-full ${heightStyle}`}>
 			<Link to={path} className="self-baseline">
 				<Button label={label} />
 			</Link>
