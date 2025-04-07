@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { PageHeader } from '~/UI/PageHeader'
 import { BrowserRouter } from 'react-router'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
 
