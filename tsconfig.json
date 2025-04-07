@@ -3,11 +3,21 @@
     "**/*",
     "**/.server/**/*",
     "**/.client/**/*",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "node_modules/vitest/globals.d.ts",
+    "app/**/*.d.ts",
+    "vite.config.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["node", "vite/client"],
+    "types": [
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node",
+      "vitest",
+      "@testing-library/jest-dom"
+    ],
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
@@ -22,6 +32,7 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "strict": true
   }
 }
