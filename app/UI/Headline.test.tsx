@@ -6,7 +6,7 @@ describe('Headline', () => {
 	it('should render correctly', () => {
 		render(<Headline text="This is a headline" />)
 
-		const button = screen.getByRole('heading', { name: 'This is a headline' })
-		expect(button).toBeInTheDocument()
+		const heading = screen.getByRole('heading', { name: 'This is a headline' })
+		expect(heading).toBeInTheDocument()
 	})
 })
