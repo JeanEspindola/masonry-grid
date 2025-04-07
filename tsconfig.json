@@ -5,6 +5,7 @@
     "**/.client/**/*",
     ".react-router/types/**/*",
     "node_modules/vitest/globals.d.ts",
+    "node_modules/pexels/dist/types.d.ts",
     "app/**/*.d.ts",
     "vite.config.ts"
   ],

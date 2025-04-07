@@ -1,5 +1,5 @@
 import type { Route } from './+types/home'
-import { getPhotos } from '~/modules/photos.server'
+import { getPhotosList } from '~/modules/photos.server'
 import type { Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
@@ -22,7 +22,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const pageParam = url.searchParams.get("page")
 
-  const { photos, page} = await getPhotos(pageParam ? Number(pageParam) : 1)
+  const { photos, page} = await getPhotosList(pageParam ? Number(pageParam) : 1)
 
   return { photosList: photos, pageParam: page }
 }

@@ -29,7 +29,7 @@ export default function PhotoDetailRoute({ loaderData }: Route.ComponentProps) {
     <main className="flex items-center justify-center p-4">
       <div className="flex flex-col items-center gap-4 h-full">
         <PageHeader title={alt || ''} navButton={{ label: '← Back to Grid', path: '/photos' }} />
-        <div className={`flex flex-col md:flex-row w-full h-full gap-4 ${heightStyle}`}>
+        <div className={`flex flex-col md:flex-row w-full h-full gap-4 overflow-y-auto ${heightStyle}`}>
           <Image src={imageSrc} alt={alt} color={avg_color} className="md:w-2/3 rounded-md object-contain" />
           <div className="md:w-1/3 flex flex-col h-full border border-solid border-gray-800 rounded p-2 md:border-none">
             <h2 className="flex items-center mb-3 text-2xl">Details:</h2>

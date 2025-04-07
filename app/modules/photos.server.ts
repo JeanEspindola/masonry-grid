@@ -1,27 +1,30 @@
-import { createClient, type Photo, type Photos } from 'pexels'
 import { getEnv } from '~/config/env.server'
-
-const client = createClient(getEnv().API_KEY as string)
 
 const PAGE_SIZE = 40
 
 export async function getPhotoById(photoId: number) {
-  return client.photos.show({ id: photoId }).then(response => {
-    if ("error" in response) {
-      throw "error"
-    } else {
-      return response as Photo
-    }
-  })
+  return fetch(`https://api.pexels.com/v1/photos/${photoId}`, {
+    headers: {
+      Authorization: getEnv().API_KEY,
+    }})
+    .then(response => response.json())
+    .catch(err => console.log(err))
 }
 
-export async function getPhotos(page: number) {
-  return client.photos.curated({ per_page: PAGE_SIZE, page })
-    .then(response => {
-      if ("error" in response) {
-        throw "error"
-      } else {
-        return response as Photos
-      }
-    })
+export async function getPhotosList(page: number) {
+  return fetch(`https://api.pexels.com/v1/curated?page=${page}&per_page=${PAGE_SIZE}`, {
+    headers: {
+      Authorization: getEnv().API_KEY,
+    }})
+    .then(response => response.json())
+    .catch(err => console.log(err))
+}
+
+export async function getSearchedPhotosList(query: string, page: number) {
+  return fetch(`https://api.pexels.com/v1/search?query=${query}&page=${page}&per_page=${PAGE_SIZE}`, {
+    headers: {
+      Authorization: getEnv().API_KEY,
+    }})
+    .then(response => response.json())
+    .catch(err => console.log(err))
 }
