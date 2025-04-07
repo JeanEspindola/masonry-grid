@@ -9,7 +9,7 @@ export function Image({ src, alt, color, className }: ImageProps) {
 		<img
 			srcSet={src}
 			alt={alt || ''}
-			style={{ backgroundColor: color }}
+			style={{ backgroundColor: color ? color : '#FFFFFF' }}
 			loading="lazy"
 			className={`w-full ${className}`}
 		/>
