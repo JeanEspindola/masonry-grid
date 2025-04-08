@@ -3,8 +3,10 @@ export type ImageProps = {
 	alt: string | null
 	color: string | null
 	className?: string
+	width: number
+	height: number
 }
-export function Image({ src, alt, color, className }: ImageProps) {
+export function Image({ src, alt, color, className, height, width }: ImageProps) {
 	return (
 		<img
 			srcSet={src}
@@ -12,6 +14,8 @@ export function Image({ src, alt, color, className }: ImageProps) {
 			style={{ backgroundColor: color ? color : '#FFFFFF' }}
 			loading="lazy"
 			className={`w-full ${className}`}
+			height={height}
+			width={width}
 		/>
 	)
 }

@@ -7,7 +7,7 @@ describe('PhotoGridItem', () => {
 	it('should render correctly', () => {
 		render(
 			<BrowserRouter>
-				<PhotoGridItem photoId={1234} alt="Image title" backgroundColor="#000" src="http://image.path.com" />
+				<PhotoGridItem photoId={1234} alt="Image title" backgroundColor="#000" imageSrc="http://image.path.com" height={100} width={100} />
 			</BrowserRouter>
 		)
 
@@ -21,7 +21,7 @@ describe('PhotoGridItem', () => {
 	it('should render correctly - missing props', () => {
 		render(
 			<BrowserRouter>
-				<PhotoGridItem photoId={1234} src="http://image.path.com" />
+				<PhotoGridItem photoId={1234} imageSrc="http://image.path.com" height={100} width={100} alt={null} backgroundColor={null} />
 			</BrowserRouter>
 		)
 

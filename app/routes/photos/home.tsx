@@ -4,9 +4,10 @@ import type { Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
 import React, { useEffect, useRef, useState } from 'react'
-import { data, useFetcher } from 'react-router'
+import { data, Link, useFetcher } from 'react-router'
 import { PageWrapper } from '~/UI/PageWrapper'
 import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
+import { Button } from '~/UI/Button'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -90,14 +91,17 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <PageWrapper>
-      <PageHeader title="Masonry Grid - Content Platform" navButton={{ label: '← Home', path: '/' }} />
+      <Link to="/" className="self-baseline">
+        <Button label="← Home" />
+      </Link>
+      <PageHeader title="Masonry Grid - Content Platform" />
       <div className={`flex flex-col overflow-y-auto w-full -mt-10 ${heightStyle}`}>
         <div className={`columns-2xs w-full gap-2 h-full`}>
           {photos.map(item => {
-            const { id, alt, avg_color, src: { original, medium} } = item
+            const { id, alt, avg_color, src: { original, medium}, height, width } = item
 
             return (
-             <PhotoGridItem alt={alt} imageSrc={medium} backgroundColor={avg_color} photoId={id} key={id} />
+             <PhotoGridItem alt={alt} imageSrc={medium} backgroundColor={avg_color} photoId={id} key={id} height={height} width={width} />
             )
           })}
         </div>
@@ -108,9 +112,9 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  const header = <PageHeader title="Masonry Grid - Content Platform" navButton={{ label: '← Home', path: '/' }} />
+  const header = <PageHeader title="Masonry Grid - Content Platform" />
 
   return (
-    <ErrorBoundaryPage error={error} header={header} />
+    <ErrorBoundaryPage error={error} header={header} navButton={{ label: '← Home', path: '/' }} />
   )
 }

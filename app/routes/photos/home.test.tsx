@@ -10,6 +10,7 @@ describe('photos list page', () => {
 			{
 				path: "/photos",
 				Component: () => (
+					// @ts-ignore
 					<PhotosIndexRoute
 						loaderData={{ photosList: photoListFixture.photos, pageParam: 1  }}
 					/>

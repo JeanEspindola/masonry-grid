@@ -4,7 +4,7 @@ const PAGE_SIZE = 40
 
 const headers = {
   headers: {
-    Authorization: getEnv().API_KEY,
+    Authorization: getEnv().API_KEY || '',
   }
 }
 
