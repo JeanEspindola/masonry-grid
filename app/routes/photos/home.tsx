@@ -1,13 +1,14 @@
 import type { Route } from './+types/home'
-import { getPhotosList } from '~/modules/photos.server'
+import { getPhotosList, getSearchedPhotosList } from '~/modules/photos.server'
 import type { Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
 import React, { useEffect, useRef, useState } from 'react'
-import { data, Link, useFetcher } from 'react-router'
+import { data, Link, useFetcher, useLocation } from 'react-router'
 import { PageWrapper } from '~/UI/PageWrapper'
 import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 import { Button } from '~/UI/Button'
+import { SearchInput } from '~/UI/SearchInput'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,8 +25,15 @@ export type PhotosLoaderType = {
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const pageParam = url.searchParams.get("page")
+  const query = url.searchParams.get("query") || ''
 
-  const response = await getPhotosList(pageParam ? Number(pageParam) : 1)
+  let response
+
+  if (query !== '') {
+    response = await getSearchedPhotosList(query, pageParam ? Number(pageParam) : 1)
+  } else {
+    response = await getPhotosList(pageParam ? Number(pageParam) : 1)
+  }
 
   if (response.status !== 200) {
     throw data('Could not fetch photo list', { status: 404 })
@@ -33,16 +41,21 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const { photos, page } = await response.json()
 
-  return { photosList: photos, pageParam: page }
+  return { photosList: photos, pageParam: page, query }
 }
 
 export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
+  const location = useLocation()
   const [photos, setPhotos] = useState(loaderData.photosList as Photo[])
   const [page, setPage] = useState(loaderData.pageParam as number)
 
   const fetcher= useFetcher<PhotosLoaderType>();
 
-  const heightStyle = 'max-h-[calc(100svh_-_108px)] sm:max-h-[calc(100svh_-_116px)] md:max-h-[calc(100svh_-_140px)] lg:max-h-[calc(100svh_-_164px)] xl:max-h-[calc(100svh_-_180px)]'
+  useEffect(() => {
+    setPhotos(loaderData.photosList)
+  }, [loaderData.photosList])
+
+  const heightStyle = 'max-h-[calc(100svh_-_164px)] sm:max-h-[calc(100svh_-_172px)] md:max-h-[calc(100svh_-_196px)] lg:max-h-[calc(100svh_-_220px)] xl:max-h-[calc(100svh_-_236px)]'
 
   const observerTarget = useRef<HTMLDivElement>(null)
 
@@ -72,7 +85,7 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   }, [observerTarget])
 
   const handleScroll = (nextPage: number) => {
-    const query = `?page=${nextPage}`
+    const query = `${location.search}&page=${nextPage}`
     fetcher.load(query)
   }
 
@@ -95,7 +108,8 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
         <Button label="← Home" />
       </Link>
       <PageHeader title="Masonry Grid - Content Platform" />
-      <div className={`flex flex-col overflow-y-auto w-full -mt-10 ${heightStyle}`}>
+      <SearchInput query={loaderData.query as string} />
+      <div className={`flex flex-col overflow-y-auto w-full ${heightStyle}`}>
         <div className={`columns-2xs w-full gap-2 h-full`}>
           {photos.map(item => {
             const { id, alt, avg_color, src: { original, medium}, height, width } = item

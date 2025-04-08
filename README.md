@@ -65,6 +65,7 @@ Some tools, libraries, techniques I picked for this task:
 - MockService Worker (MSW): Used to mock all API calls in order to not reach the real API for unit tests.
 - Lazy loading images: each image is only loaded to the browser once it is scrolled into the viewport.
 - Error boundary per route and root file.
+- RemixUtils - for having useDebouncedSubmit and delaying the keystrokes of the search input.
 
 ### Streaming
 
@@ -78,6 +79,9 @@ Since no library should have been used to build the masonry-grid, I used the Int
 - Not being able to use third party library was a real challenge here. I tried to implement the virtualization by myself but due to lack of time (sometimes even reaching PEXELS API daily limit), this request was not done.
 - A shouldRevalidate function can be implemented on each route to avoid reloading/re-fetching data on each route back/forward navigation.
 - There some duplication issues, while loading and fetching more data. I am not really sure if this is an issue in my implementation or if the next page is in fact brining some duplicated items.
+
+### Improvements - TBD
+- Prettier and linting. I did not add due the timing constraints.
 
 ### Testing
 There are two commands for checking the implemented unit tests.
@@ -94,6 +98,9 @@ npm run coverage
 - I checked the performance using Lighthouse. Got 100% in accessibility and 86% overall.
 - The results were bad at LCP, which basically had a huge influnce of not implementing the list virtualization. Also if I had streamed the list route, I believe this result would have been improved.
 
+### Bonus
+I implemented a debounced search input. The challenge here was to handle two different APIs as curated should be used for generic listing and search for querying the data base. Also some of the unit tests started to failed.
+I used the same approach with Remix and did not have the error in my tests. Another challenge of new RR7 API in comparison to Remix.
 
 ### Final comments
 This was definitely the most difficult but the most fun challenge I ever had. Really enjoyed working on it and will for sure enhance or add missing things later.
