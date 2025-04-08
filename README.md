@@ -24,6 +24,15 @@ Install the dependencies:
 npm install
 ```
 
+### API_KEY
+
+Please add a ``.env`` file to the root of the code base. You can use the ``.env.example`` as guidance.
+In the environment file add your own API Key:
+
+```
+API_KEY="API_KEY_HERE"
+```
+
 ### Development
 
 Start the development server with HMR:
@@ -42,46 +51,49 @@ Create a production build:
 npm run build
 ```
 
-## Deployment
+## Development Notes
 
-### Docker Deployment
+I opted for using the new React Router v7 starter project as having the routes with RR was mandatory. Even after continuously working with Remix, handling RR7 (a.k.a Remix v3) brought me some challenges as the API is a bit different and configuring a new project always has its complications.
+With RR7 heavily going to the server, I went for ServerSide rendering for both list and detail route. That means the whole data fetching happens on the server and to the client side we serve a built HTML.
 
-To build and run using Docker:
+### Decisions
+
+Some tools, libraries, techniques I picked for this task:
+
+- Tailwind: the whole project is styled with Tailwind. A very much lighter styling solution.
+- Vitest/Testing Library: Runner and library used for handling unit tests for the project.
+- MockService Worker (MSW): Used to mock all API calls in order to not reach the real API for unit tests.
+- Lazy loading images: each image is only loaded to the browser once it is scrolled into the viewport.
+- Error boundary per route and root file.
+
+### Streaming
+
+I actually implemented the detail route deferring the promise and using Await/Suspense to render a fallback page while the date was still being loaded.
+I did this in order to demonstrate how implementations like this project could be improved.
+
+### Fetching on scroll
+Since no library should have been used to build the masonry-grid, I used the IntersectionObserver API in order to achieve/identify the end of the page and trigger another request.
+
+### Not implemented / Issues
+- Not being able to use third party library was a real challenge here. I tried to implement the virtualization by myself but due to lack of time (sometimes even reaching PEXELS API daily limit), this request was not done.
+- A shouldRevalidate function can be implemented on each route to avoid reloading/re-fetching data on each route back/forward navigation.
+- There some duplication issues, while loading and fetching more data. I am not really sure if this is an issue in my implementation or if the next page is in fact brining some duplicated items.
+
+### Testing
+There are two commands for checking the implemented unit tests.
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+npm run test
+```
+and
+```bash
+npm run coverage
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+### Performance
+- I checked the performance using Lighthouse. Got 100% in accessibility and 86% overall.
+- The results were bad at LCP, which basically had a huge influnce of not implementing the list virtualization. Also if I had streamed the list route, I believe this result would have been improved.
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
 
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+### Final comments
+This was definitely the most difficult but the most fun challenge I ever had. Really enjoyed working on it and will for sure enhance or add missing things later.
