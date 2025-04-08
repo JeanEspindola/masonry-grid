@@ -13,13 +13,18 @@ export type ErrorBoundaryPageProps = {
 }
 
 export function ErrorBoundaryPage({ error, header, navButton: { path, label } }: ErrorBoundaryPageProps) {
+	console.log(error)
 	let childNode: React.ReactNode = <h1 className="text-xl font-semibold">Unknown Error</h1>
-	if (isRouteErrorResponse(error)) {
+	// @ts-ignore
+	if (isRouteErrorResponse(error) || error.init.status === 404) {
 		childNode = (
 			<>
 				<h1 className="text-[clamp(1em,2vw,3em)] font-semibold">
-					{error.status} {error.statusText}
+					{/* error object not typed, it can be of 2 different errors here*/}
+					{/* @ts-ignore*/}
+					{error.status || error.init.status} {error.statusText}
 				</h1>
+				{/* @ts-ignore */}
 				<p className="text-[clamp(0.75em,2vw,1.5em)]">{error.data}</p>
 			</>
 		)

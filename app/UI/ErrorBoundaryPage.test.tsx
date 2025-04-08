@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 import { PageHeader } from '~/UI/PageHeader'
-import { BrowserRouter, type ErrorResponse } from 'react-router'
+import { BrowserRouter } from 'react-router'
 
 describe('ErrorBoundary', () => {
 	const header = <PageHeader title="Error" />
@@ -13,12 +13,14 @@ describe('ErrorBoundary', () => {
 			path: '/path'
 		}
 
-		const error: ErrorResponse = {
-			data: 'Test',
-			status: 404,
-			statusText: 'Error!!'
-
+		const error = {
+			init: {
+				data: 'Test',
+				status: 404,
+				statusText: 'Error!!'
+			}
 		}
+
 		render(
 			<BrowserRouter>
 				<ErrorBoundaryPage header={header} error={error} navButton={navButton} />
@@ -32,7 +34,7 @@ describe('ErrorBoundary', () => {
 		});
 
 		const subText = screen.getByRole('heading', {
-			name: 'Unknown Error'
+			name: 'Error'
 		})
 
 		expect(navLinkButton).toBeInTheDocument()
