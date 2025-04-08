@@ -62,7 +62,7 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && fetcher.state !== 'loading') {
+        if (entries[0].isIntersecting && fetcher.state === 'idle') {
           setPage((prevPage) => {
             const nextPage = prevPage + 1;
 
