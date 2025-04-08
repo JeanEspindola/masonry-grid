@@ -1,14 +1,15 @@
 import {
-  isRouteErrorResponse,
+  isRouteErrorResponse, Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "react-router";
+} from 'react-router'
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { Button } from '~/UI/Button'
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -25,14 +26,14 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body className="overflow-y-hidden">
+      <body className="overflow-y-hidden h-full">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -48,28 +49,24 @@ export default function App() {
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
-  let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
+    message = error.status === 404 ? message : "Error";
     details =
       error.status === 404
-        ? "The requested page could not be found."
+        ? "Sorry, this page does not exists!!"
         : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
-    stack = error.stack;
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
+    <main className="flex flex-col items-center justify-center py-16 px-4 gap-2 mx-auto">
+      <h1 className="text-[clamp(1em,3vw,3em)] font-semibold mb-4">{message}</h1>
+      <p className="text-[clamp(0.75em,3vw,2em)]">{details}</p>
+      <Link to="/" className="self-baseline">
+        <Button label="Go back home" />
+      </Link>
     </main>
   );
 }

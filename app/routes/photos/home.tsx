@@ -3,8 +3,10 @@ import { getPhotosList } from '~/modules/photos.server'
 import type { Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
-import { useEffect, useRef, useState } from 'react'
-import { useFetcher } from 'react-router'
+import React, { useEffect, useRef, useState } from 'react'
+import { data, useFetcher } from 'react-router'
+import { PageWrapper } from '~/UI/PageWrapper'
+import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -22,7 +24,13 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const pageParam = url.searchParams.get("page")
 
-  const { photos, page} = await getPhotosList(pageParam ? Number(pageParam) : 1)
+  const response = await getPhotosList(pageParam ? Number(pageParam) : 1)
+
+  if (response.status !== 200) {
+    throw data('Could not fetch photo list', { status: 404 })
+  }
+
+  const { photos, page} = await response.json()
 
   return { photosList: photos, pageParam: page }
 }
@@ -81,22 +89,28 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   }, [fetcher.data, fetcher.state])
 
   return (
-    <main className="flex items-center justify-center p-4 w-full">
-      <div className="flex flex-col items-center gap-4 w-full">
-        <PageHeader title="Masonry Grid - Content Platform" navButton={{ label: '← Home', path: '/' }} />
-        <div className={`flex flex-col overflow-y-auto w-full -mt-10 ${heightStyle}`}>
-          <div className={`columns-2xs w-full gap-2 h-full`}>
-            {photos.map(item => {
-              const { id, alt, avg_color, src: { original, medium} } = item
+    <PageWrapper>
+      <PageHeader title="Masonry Grid - Content Platform" navButton={{ label: '← Home', path: '/' }} />
+      <div className={`flex flex-col overflow-y-auto w-full -mt-10 ${heightStyle}`}>
+        <div className={`columns-2xs w-full gap-2 h-full`}>
+          {photos.map(item => {
+            const { id, alt, avg_color, src: { original, medium} } = item
 
-              return (
-               <PhotoGridItem alt={alt} imageSrc={medium} backgroundColor={avg_color} photoId={id} key={id} />
-              )
-            })}
-          </div>
-          <div ref={observerTarget} className="relative sm:bottom-[300px]" />
+            return (
+             <PhotoGridItem alt={alt} imageSrc={medium} backgroundColor={avg_color} photoId={id} key={id} />
+            )
+          })}
         </div>
+        <div ref={observerTarget} className="relative sm:bottom-[300px]" />
       </div>
-    </main>
+    </PageWrapper>
+  )
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  const header = <PageHeader title="Masonry Grid - Content Platform" navButton={{ label: '← Home', path: '/' }} />
+
+  return (
+    <ErrorBoundaryPage error={error} header={header} />
   )
 }

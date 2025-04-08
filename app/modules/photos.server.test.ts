@@ -4,17 +4,20 @@ import { photoFixture, photoListFixture, photoSearchedListFixture } from '~/test
 
 describe('photos.server', () => {
 	it('check getSearchedPhotosList', async () => {
-		const responseTest = await getSearchedPhotosList('people', 1)
-		expect(await responseTest).toEqual({ ...photoSearchedListFixture })
+		const response = await getSearchedPhotosList('people', 1)
+		expect(response.status).toEqual(200)
+		expect(await response.json()).toEqual({ ...photoSearchedListFixture })
 	})
 
 	it('check getPhotoById', async () => {
-		const responseTest = await getPhotoById(31316339)
-		expect(await responseTest).toEqual({ ...photoFixture })
+		const response = await getPhotoById(31316339)
+		expect(response.status).toEqual(200)
+		expect(await response.json()).toEqual({ ...photoFixture })
 	})
 
 	it('check getPhotosList', async () => {
-		const responseTest = await getPhotosList(1)
-		expect(await responseTest).toEqual({ ...photoListFixture })
+		const response = await getPhotosList(1)
+		expect(response.status).toEqual(200)
+		expect(await response.json()).toEqual({ ...photoListFixture })
 	})
 })
