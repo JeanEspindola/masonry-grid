@@ -20,7 +20,7 @@ export type PhotosLoaderType = {
   pageParam: number
 }
 
-export async function loader({ params, request }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const pageParam = url.searchParams.get("page")
 
@@ -30,7 +30,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     throw data('Could not fetch photo list', { status: 404 })
   }
 
-  const { photos, page} = await response.json()
+  const { photos, page } = await response.json()
 
   return { photosList: photos, pageParam: page }
 }

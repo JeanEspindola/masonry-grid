@@ -64,7 +64,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     <main className="flex flex-col items-center justify-center py-16 px-4 gap-2 mx-auto">
       <h1 className="text-[clamp(1em,3vw,3em)] font-semibold mb-4">{message}</h1>
       <p className="text-[clamp(0.75em,3vw,2em)]">{details}</p>
-      <Link to="/" className="self-baseline">
+      <Link to="/" className="mt-8">
         <Button label="Go back home" />
       </Link>
     </main>

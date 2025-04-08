@@ -3,12 +3,12 @@ import { getPhotoById } from '~/modules/photos.server'
 import { type Photo } from 'pexels'
 import { Image } from '~/UI/Image'
 import { PageHeader } from '~/UI/PageHeader'
-import { data, isRouteErrorResponse } from 'react-router'
+import { data } from 'react-router'
 import React from 'react'
 import { PageWrapper } from '~/UI/PageWrapper'
 import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
     { title: "Masonry Grid - Detailed Photo" },
     { name: "description", content: "Masonry Grid - Detailed!" },
