@@ -13,6 +13,8 @@ describe('photos details page', () => {
 				Component: () => (
 					<PhotoDetailRoute
 						loaderData={{ photo: photoFixture }}
+						params={{ photoId: '1234'}}
+						matches={[{}]}
 					/>
 				),
 			},
@@ -20,7 +22,7 @@ describe('photos details page', () => {
 
 		render(<Stub initialEntries={["/photos/1234"]} initialIndex={0} />)
 
-		const title = await waitFor(() => screen.getByRole('heading', { name: photoFixture.alt }))
+		const title = await waitFor(() => screen.getByRole('heading', { name: 'Narrow cobblestone street lined with colorful medieval buildings in a picturesque European village.' }))
 		const details = await waitFor(() => screen.getByRole('heading', { name: 'Details:' }))
 		const profile = await waitFor(() => screen.getByRole('heading', { name: /👤: profile/i }))
 		const url = await waitFor(() => screen.getByRole('heading', { name: /🔗: url/i }))
@@ -32,7 +34,8 @@ describe('photos details page', () => {
 	})
 
 	it('loader', async () => {
-		const response = await loader({ params: { photoId: '1234' } })
+		const request = new Request('http://app.com/photos/1234', {})
+		const response = await loader({ params: { photoId: '1234' }, context: {} , request })
 		expect(response.photo).toEqual(photoFixture)
 	})
 })
