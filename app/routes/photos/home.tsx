@@ -4,11 +4,12 @@ import type { Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
 import React, { useEffect, useRef, useState } from 'react'
-import { data, Link, useFetcher, useLocation } from 'react-router'
+import { data, Link, useFetcher, useSearchParams } from 'react-router'
 import { PageWrapper } from '~/UI/PageWrapper'
 import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 import { Button } from '~/UI/Button'
 import { SearchInput } from '~/UI/SearchInput'
+import { LoadingItem } from '~/UI/LoadingItem'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -45,14 +46,19 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
-  const location = useLocation()
+  const [searchParams] = useSearchParams()
   const [photos, setPhotos] = useState(loaderData.photosList as Photo[])
   const [page, setPage] = useState(loaderData.pageParam as number)
+  const [loading, setLoading] = useState(false)
+  const [endOfPage, setEndOfPage] = useState(false)
+  const [shouldFetch, setShouldFetch] = useState(true)
 
   const fetcher= useFetcher<PhotosLoaderType>();
 
   useEffect(() => {
     setPhotos(loaderData.photosList)
+    setShouldFetch(true)
+    setPage(1)
   }, [loaderData.photosList])
 
   const heightStyle = 'max-h-[calc(100svh_-_164px)] sm:max-h-[calc(100svh_-_172px)] md:max-h-[calc(100svh_-_196px)] lg:max-h-[calc(100svh_-_220px)] xl:max-h-[calc(100svh_-_236px)]'
@@ -60,20 +66,22 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   const observerTarget = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (endOfPage && fetcher.state === 'idle' && shouldFetch) {
+      setLoading(true)
+      handleScroll(page + 1)
+      setPage(page + 1)
+    }
+  }, [endOfPage])
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && fetcher.state === 'idle') {
-          setPage((prevPage) => {
-            const nextPage = prevPage + 1;
-
-            handleScroll(nextPage)
-
-            return nextPage;
-          })
+        if (entries[0].isIntersecting) {
+          setEndOfPage(true)
         }
       },
       { threshold: 1 }
-    );
+    )
     if (observerTarget.current) {
       observer.observe(observerTarget.current)
     }
@@ -85,7 +93,9 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   }, [observerTarget])
 
   const handleScroll = (nextPage: number) => {
-    const query = `${location.search}&page=${nextPage}`
+    const hasQueryParam = searchParams.has('query') && searchParams.get('query') !== ''
+    const query = hasQueryParam ? `?${searchParams.toString()}&page=${nextPage}` : `?page=${nextPage}`
+
     fetcher.load(query)
   }
 
@@ -94,12 +104,17 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
       return
     }
 
-    const { photosList, pageParam } = fetcher.data
+    const { photosList } = fetcher.data
+
+    if (photosList && photosList.length === 0) {
+      setShouldFetch(false)
+    }
 
     if (photosList.length > 0) {
       setPhotos((prevItems: Photo[]) => [...prevItems, ...photosList])
-      setPage(pageParam)
     }
+    setLoading(false)
+    setEndOfPage(false)
   }, [fetcher.data, fetcher.state])
 
   return (
@@ -120,15 +135,16 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
           })}
         </div>
         <div ref={observerTarget} className="relative sm:bottom-[300px]" />
+        {loading ? <LoadingItem /> : null}
       </div>
     </PageWrapper>
   )
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  const header = <PageHeader title="Masonry Grid - Content Platform" />
+export function ErrorBoundary({error}: Route.ErrorBoundaryProps) {
+  const header = <PageHeader title="Masonry Grid - Content Platform"/>
 
   return (
-    <ErrorBoundaryPage error={error} header={header} navButton={{ label: '← Home', path: '/' }} />
+    <ErrorBoundaryPage error={error} header={header} navButton={{label: '← Home', path: '/'}}/>
   )
 }
