@@ -1,6 +1,5 @@
 import type { Route } from './+types/home'
 import { getPhotosList, getSearchedPhotosList } from '~/modules/photos.server'
-import type { Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { PhotoGridItem } from '~/UI/PhotoGridItem'
 import React, { useEffect, useRef, useState } from 'react'
@@ -10,6 +9,7 @@ import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 import { Button } from '~/UI/Button'
 import { SearchInput } from '~/UI/SearchInput'
 import { LoadingItem } from '~/UI/LoadingItem'
+import type { Photo } from '~/types'
 
 export function meta({}: Route.MetaArgs) {
   return [

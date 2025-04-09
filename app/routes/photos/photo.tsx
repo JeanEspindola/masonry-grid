@@ -1,6 +1,5 @@
 import type { Route } from './+types/photo'
 import { getPhotoById } from '~/modules/photos.server'
-import { type Photo } from 'pexels'
 import { PageHeader } from '~/UI/PageHeader'
 import { Await, Link } from 'react-router'
 import React from 'react'
@@ -9,6 +8,7 @@ import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 import { Spinner } from '~/UI/Spinner'
 import { Button } from '~/UI/Button'
 import { PhotoDetailPage } from '~/UI/PhotoDetailPage'
+import type { Photo } from '~/utils/types'
 
 export function meta({}: Route.MetaArgs) {
   return [

@@ -1,4 +1,4 @@
-import type { Photo, Photos, PhotosWithTotalResults } from 'pexels'
+import type { Photo, SearchCuratedPhotos } from '~/utils/types'
 
 export const photoFixture: Photo = {
 	id: 31316339,
@@ -8,7 +8,7 @@ export const photoFixture: Photo = {
 	alt: 'Narrow cobblestone street lined with colorful medieval buildings in a picturesque European village.',
 	photographer: 'Omair Tabikh',
 	photographer_url: 'https://www.pexels.com/@omair-tabikh-301813574',
-	photographer_id: '301813574',
+	photographer_id: 301813574,
 	avg_color: '#836648',
 	src: {
 		original: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg',
@@ -23,7 +23,7 @@ export const photoFixture: Photo = {
 	liked: false,
 }
 
-export const photoListFixture: Photos = {
+export const photoListFixture: SearchCuratedPhotos = {
 	page: 1,
 	per_page: 40,
 	photos: [
@@ -37,7 +37,7 @@ export const photoListFixture: Photos = {
 			url: 'https://www.pexels.com/photo/vibrant-street-scene-in-shinsekai-osaka-31308278/',
 			photographer: 'Bapak Moto',
 			photographer_url: 'https://www.pexels.com/@bapak-moto-2150116313',
-			photographer_id: '2150116313',
+			photographer_id: 2150116313,
 			avg_color: '#5B5B5D',
 			src: {
 				original: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg',
@@ -59,7 +59,7 @@ export const photoListFixture: Photos = {
 			url: 'https://www.pexels.com/photo/magnificent-baroque-dome-in-naples-italy-31309026/',
 			photographer: 'Gioele Gatto',
 			photographer_url: 'https://www.pexels.com/@gioele-gatto-619355282',
-			photographer_id: '619355282',
+			photographer_id: 619355282,
 			avg_color: '#7A4B2F',
 			src: {
 				original: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg',
@@ -81,7 +81,7 @@ export const photoListFixture: Photos = {
 			url: 'https://www.pexels.com/photo/charming-street-scene-in-historic-gorlitz-germany-31313207/',
 			photographer: 'Nikita Pishchugin',
 			photographer_url: 'https://www.pexels.com/@nikitapishchugin',
-			photographer_id: '748422471',
+			photographer_id: 748422471,
 			avg_color: '#A1957D',
 			src: {
 				original: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg',
@@ -97,10 +97,12 @@ export const photoListFixture: Photos = {
 			alt: 'Beautiful street view in Görlitz, Germany, featuring Cambrinus Bierstuben and classic architecture.'
 		},
 	],
-	next_page: 2,
+	prev_page: 'prev',
+	next_page: 'next',
+	total_results: 4,
 }
 
-export const photoSearchedListFixture: PhotosWithTotalResults = {
+export const photoSearchedListFixture: SearchCuratedPhotos = {
 	page: 1,
 	per_page: 40,
 	photos: [
@@ -114,7 +116,7 @@ export const photoSearchedListFixture: PhotosWithTotalResults = {
 			url: 'https://www.pexels.com/photo/vibrant-street-scene-in-shinsekai-osaka-31308278/',
 			photographer: 'Bapak Moto',
 			photographer_url: 'https://www.pexels.com/@bapak-moto-2150116313',
-			photographer_id: '2150116313',
+			photographer_id: 2150116313,
 			avg_color: '#5B5B5D',
 			src: {
 				original: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg',
@@ -136,8 +138,8 @@ export const photoSearchedListFixture: PhotosWithTotalResults = {
 			url: 'https://www.pexels.com/photo/charming-street-scene-in-historic-gorlitz-germany-31313207/',
 			photographer: 'Nikita Pishchugin',
 			photographer_url: 'https://www.pexels.com/@nikitapishchugin',
-			photographer_id: '748422471',
-			avg_color: '#A1957D',
+			photographer_id: 748422471,
+			avg_color:'#A1957D',
 			src: {
 				original: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg',
 				large2x: 'https://images.pexels.com/photos/31316339/pexels-photo-31316339.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -153,5 +155,5 @@ export const photoSearchedListFixture: PhotosWithTotalResults = {
 		},
 	],
 	total_results: 3,
-	next_page: 2,
+	next_page: 'next',
 }
