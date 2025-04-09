@@ -9,7 +9,7 @@ import { ErrorBoundaryPage } from '~/UI/ErrorBoundaryPage'
 import { Button } from '~/UI/Button'
 import { SearchInput } from '~/UI/SearchInput'
 import { LoadingItem } from '~/UI/LoadingItem'
-import type { Photo } from '~/types'
+import type { Photo, SearchCuratedPhotos } from '~/utils/types'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -21,6 +21,8 @@ export function meta({}: Route.MetaArgs) {
 export type PhotosLoaderType = {
   photosList: Photo[]
   pageParam: number
+  query: string
+  nextPage: string | null
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -40,20 +42,20 @@ export async function loader({ request }: Route.LoaderArgs) {
     throw data('Could not fetch photo list', { status: 404 })
   }
 
-  const { photos, page } = await response.json()
+  const { photos, page, next_page } = await response.json() as SearchCuratedPhotos
 
-  return { photosList: photos, pageParam: page, query }
+  return { photosList: photos, pageParam: page, query, nextPage: next_page }
 }
 
 export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
   const [searchParams] = useSearchParams()
-  const [photos, setPhotos] = useState(loaderData.photosList as Photo[])
+  const [photos, setPhotos] = useState(loaderData.photosList)
   const [page, setPage] = useState(loaderData.pageParam as number)
   const [loading, setLoading] = useState(false)
   const [endOfPage, setEndOfPage] = useState(false)
-  const [shouldFetch, setShouldFetch] = useState(true)
+  const [shouldFetch, setShouldFetch] = useState(loaderData.nextPage !== undefined)
 
-  const fetcher= useFetcher<PhotosLoaderType>();
+  const fetcher= useFetcher<PhotosLoaderType>()
 
   useEffect(() => {
     setPhotos(loaderData.photosList)
@@ -104,13 +106,13 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
       return
     }
 
-    const { photosList } = fetcher.data
+    const { photosList, nextPage } = fetcher.data
 
-    if (photosList && photosList.length === 0) {
+    if (!nextPage) {
       setShouldFetch(false)
     }
 
-    if (photosList.length > 0) {
+    if (photosList && photosList.length > 0) {
       setPhotos((prevItems: Photo[]) => [...prevItems, ...photosList])
     }
     setLoading(false)

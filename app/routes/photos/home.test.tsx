@@ -15,7 +15,7 @@ describe('photos list page', () => {
 				Component: () => (
 					// @ts-ignore
 					<PhotosIndexRoute
-						loaderData={{ photosList: photoListFixture.photos, pageParam: 1, query: '' }}
+						loaderData={{ photosList: photoListFixture.photos, pageParam: 1, query: '', nextPage: 'next' }}
 					/>
 				),
 			},

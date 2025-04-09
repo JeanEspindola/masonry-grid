@@ -17,7 +17,7 @@ export default defineConfig({
     coverage: {
       reportsDirectory: 'coverage/app',
       include: ['app/**/*.*'],
-      exclude: ['app/config/*.*', 'app/root.tsx', 'app/routes.ts', 'app/test/**/*.*'],
+      exclude: ['app/config/*.*', 'app/root.tsx', 'app/routes.ts', 'app/test/**/*.*', 'app/utils/types.ts'],
       provider: 'v8',
     },
   }
