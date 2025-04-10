@@ -1,18 +1,4 @@
-# Welcome to React Router!
-
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+# Masonry Grid Application!
 
 ## Getting Started
 
@@ -78,8 +64,8 @@ Since no library should have been used to build the masonry-grid, I used the Int
 ### Not implemented / Issues
 - Not being able to use third party library was a real challenge here. I tried to implement the virtualization by myself but due to lack of time (sometimes even reaching PEXELS API daily limit), this request was not done.
 - A shouldRevalidate function can be implemented on each route to avoid reloading/re-fetching data on each route back/forward navigation.
-- There some duplication issues, while loading and fetching more data. I am not really sure if this is an issue in my implementation or if the next page is in fact brining some duplicated items.
-- There might be some ``too many requests`` issue when scrolling the page really fast. I am not sure about this yet, it is not consistent but I am still investigating.
+- There are some duplication issues, while loading and fetching more data. I am not really sure if this is an issue in my implementation or if the next page is in fact brining some duplicated items.
+- There might be some ``too many requests`` issue when scrolling the page really fast. I am not sure about this yet, it is not consistent but I have added a better error message for the detailed route
 
 ### Improvements - TBD
 - Prettier and linting. I did not add due the timing constraints.
