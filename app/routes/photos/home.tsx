@@ -57,10 +57,13 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
 
   const fetcher= useFetcher<PhotosLoaderType>()
 
+  const scrollRef = useRef(null)
+
   useEffect(() => {
     setPhotos(loaderData.photosList)
     setShouldFetch(true)
     setPage(1)
+    scrollToTop()
   }, [loaderData.photosList])
 
   const heightStyle = 'max-h-[calc(100svh_-_164px)] sm:max-h-[calc(100svh_-_172px)] md:max-h-[calc(100svh_-_196px)] lg:max-h-[calc(100svh_-_220px)] xl:max-h-[calc(100svh_-_236px)]'
@@ -119,6 +122,13 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
     setEndOfPage(false)
   }, [fetcher.data, fetcher.state])
 
+  const scrollToTop = () => {
+    // Check if the scrollRef is defined and scroll to the top
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0
+    }
+  };
+
   return (
     <PageWrapper>
       <Link to="/" className="self-baseline">
@@ -126,7 +136,7 @@ export default function PhotosIndexRoute({ loaderData }: Route.ComponentProps) {
       </Link>
       <PageHeader title="Masonry Grid - Content Platform" />
       <SearchInput query={loaderData.query as string} />
-      <div className={`flex flex-col overflow-y-auto w-full ${heightStyle}`}>
+      <div ref={scrollRef} className={`flex flex-col overflow-y-auto w-full ${heightStyle}`}>
         <div className={`columns-2xs w-full gap-2 h-full`}>
           {photos.map(item => {
             const { id, alt, avg_color, src: { original, medium}, height, width } = item

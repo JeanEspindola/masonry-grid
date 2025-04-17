@@ -32,13 +32,7 @@ export function SearchInput({ query }: SearchInputProps) {
 								debounceTimeout: 300,
 							})
 						}}
-						onBlur={event => {
-							submit(event.target.form, {
-								debounceTimeout: 0,
-							})
-						}}
 					/>
-
 			</Form>
 		</div>
 	)
